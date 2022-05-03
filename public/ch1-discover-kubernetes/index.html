@@ -1,0 +1,1618 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.4, mkdocs-material-8.1.1">
+    
+    
+      
+        <title>Day 1 - Discovery - Kubernetes in action</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.23b6d78a.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.e6a45f82.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#e92063">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="pink" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#day-1-discover-kubernetes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Kubernetes in action" class="md-header__button md-logo" aria-label="Kubernetes in action" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Kubernetes in action
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Day 1 - Discovery
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href=".." class="md-tabs__link">
+      Briefing
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="./" class="md-tabs__link md-tabs__link--active">
+        TP
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../cheatsheet/" class="md-tabs__link">
+      Cheatsheet
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../about/" class="md-tabs__link">
+      About
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Kubernetes in action" class="md-nav__button md-logo" aria-label="Kubernetes in action" data-md-component="logo">
+      
+  <img src="../assets/logo.png" alt="logo">
+
+    </a>
+    Kubernetes in action
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Briefing
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          TP
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="TP" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          TP
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Day 1 - Discovery
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Day 1 - Discovery
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#initialisation-des-outils" class="md-nav__link">
+    Initialisation des outils
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-dun-editeur-de-code" class="md-nav__link">
+    Installation d'un éditeur de code
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-de-kubectl" class="md-nav__link">
+    Installation de kubectl
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation de kubectl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linux-macos" class="md-nav__link">
+    Linux / MacOS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    Windows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubeconfig" class="md-nav__link">
+    Kubeconfig
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lens" class="md-nav__link">
+    Lens
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#premieres-commandes" class="md-nav__link">
+    Premières commandes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etape-1-premieres-ressources-podsreplicasetdeployment" class="md-nav__link">
+    Etape 1 : Premières ressources : Pods/Replicaset/Deployment
+  </a>
+  
+    <nav class="md-nav" aria-label="Etape 1 : Premières ressources : Pods/Replicaset/Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pods" class="md-nav__link">
+    Pods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pod-yaml-definition" class="md-nav__link">
+    Pod Yaml Definition
+  </a>
+  
+    <nav class="md-nav" aria-label="Pod Yaml Definition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicaset" class="md-nav__link">
+    Replicaset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    Deployment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faire-un-rollback" class="md-nav__link">
+    Faire un Rollback
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mettre-a-lechelle" class="md-nav__link">
+    Mettre à l'échelle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mettre-en-standby-un-deploiement" class="md-nav__link">
+    Mettre en standby un deploiement
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus" class="md-nav__link">
+    Bonus
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etape-2-publication-serviceingress" class="md-nav__link">
+    Etape 2 : Publication Service/Ingress
+  </a>
+  
+    <nav class="md-nav" aria-label="Etape 2 : Publication Service/Ingress">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    Service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress" class="md-nav__link">
+    Ingress
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus_1" class="md-nav__link">
+    Bonus
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mise-en-situation" class="md-nav__link">
+    Mise en situation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etape-3-configmapsecret" class="md-nav__link">
+    Etape 3 : ConfigMap/Secret
+  </a>
+  
+    <nav class="md-nav" aria-label="Etape 3 : ConfigMap/Secret">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple" class="md-nav__link">
+    Exemple:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secret" class="md-nav__link">
+    Secret
+  </a>
+  
+    <nav class="md-nav" aria-label="Secret">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bonus-1-rendre-sa-couleur-secrete" class="md-nav__link">
+    Bonus 1: Rendre sa couleur secrète
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus-2-mon-pod-est-il-en-vie" class="md-nav__link">
+    Bonus 2: Mon pod est-il en vie ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus-3-let-my-kubernetes-scale" class="md-nav__link">
+    Bonus 3: Let my kubernetes Scale !!!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch2-deep-dive/" class="md-nav__link">
+        Day 2 - Deep Dive
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ch3-gitops/" class="md-nav__link">
+        Day 3 - GitOps
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cheatsheet/" class="md-nav__link">
+        Cheatsheet
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../about/" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#initialisation-des-outils" class="md-nav__link">
+    Initialisation des outils
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-dun-editeur-de-code" class="md-nav__link">
+    Installation d'un éditeur de code
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation-de-kubectl" class="md-nav__link">
+    Installation de kubectl
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation de kubectl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linux-macos" class="md-nav__link">
+    Linux / MacOS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    Windows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubeconfig" class="md-nav__link">
+    Kubeconfig
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lens" class="md-nav__link">
+    Lens
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#premieres-commandes" class="md-nav__link">
+    Premières commandes
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etape-1-premieres-ressources-podsreplicasetdeployment" class="md-nav__link">
+    Etape 1 : Premières ressources : Pods/Replicaset/Deployment
+  </a>
+  
+    <nav class="md-nav" aria-label="Etape 1 : Premières ressources : Pods/Replicaset/Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pods" class="md-nav__link">
+    Pods
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pod-yaml-definition" class="md-nav__link">
+    Pod Yaml Definition
+  </a>
+  
+    <nav class="md-nav" aria-label="Pod Yaml Definition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#replicaset" class="md-nav__link">
+    Replicaset
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    Deployment
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#faire-un-rollback" class="md-nav__link">
+    Faire un Rollback
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mettre-a-lechelle" class="md-nav__link">
+    Mettre à l'échelle
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mettre-en-standby-un-deploiement" class="md-nav__link">
+    Mettre en standby un deploiement
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus" class="md-nav__link">
+    Bonus
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etape-2-publication-serviceingress" class="md-nav__link">
+    Etape 2 : Publication Service/Ingress
+  </a>
+  
+    <nav class="md-nav" aria-label="Etape 2 : Publication Service/Ingress">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    Service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress" class="md-nav__link">
+    Ingress
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus_1" class="md-nav__link">
+    Bonus
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mise-en-situation" class="md-nav__link">
+    Mise en situation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#etape-3-configmapsecret" class="md-nav__link">
+    Etape 3 : ConfigMap/Secret
+  </a>
+  
+    <nav class="md-nav" aria-label="Etape 3 : ConfigMap/Secret">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple" class="md-nav__link">
+    Exemple:
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secret" class="md-nav__link">
+    Secret
+  </a>
+  
+    <nav class="md-nav" aria-label="Secret">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bonus-1-rendre-sa-couleur-secrete" class="md-nav__link">
+    Bonus 1: Rendre sa couleur secrète
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus-2-mon-pod-est-il-en-vie" class="md-nav__link">
+    Bonus 2: Mon pod est-il en vie ?
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bonus-3-let-my-kubernetes-scale" class="md-nav__link">
+    Bonus 3: Let my kubernetes Scale !!!
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+<h1 id="day-1-discover-kubernetes">Day 1: Discover Kubernetes</h1>
+<h2 id="initialisation-des-outils">Initialisation des outils</h2>
+<p>Vous avez dû recevoir un petit cadeau dans votre boîte mail nommé kubeconfig. Ce fichier est la clef d’accès au cluster Kubernetes qui a été spécialement provisionné pour que vous puissiez vous amuser à déployer des ressources, publier des services et les scaler.
+Pour pouvoir l’utiliser, vous devrez d’abord installer kubectl. Il s’agit de l'outil d’administration en ligne de commande (CLI) pour manager Kubernetes.</p>
+<h2 id="installation-dun-editeur-de-code">Installation d'un éditeur de code</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Il est conseillé d'installer un éditeur de code complet pour l'édition des fichiers tout au long de cette formation.</p>
+</div>
+<p>Si vous n'en avez pas, vous pouvez utiliser <a href="https://code.visualstudio.com/">VsCode</a> .</p>
+<h2 id="installation-de-kubectl">Installation de kubectl</h2>
+<h3 id="linux-macos">Linux / MacOS</h3>
+<p>Téléchargez le client : 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>curl -LO https://storage.googleapis.com/kubernetes-release/release/<span class="k">$(</span>curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt<span class="k">)</span>/bin/linux/amd64/kubectl
+</code></pre></div></p>
+<p>Le rendre exécutable :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>chmod +x ./kubectl
+</code></pre></div></p>
+<p>Déplacez le binaire dans votre PATH :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo mv ./kubectl /usr/local/bin/kubectl
+</code></pre></div></p>
+<p>Testez pour vous assurer que la version que vous avez installée est à jour :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl version --client
+</code></pre></div></p>
+<h3 id="windows">Windows</h3>
+<p>Téléchargez le client :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.23.0/bin/windows/amd64/kubectl.exe
+</code></pre></div></p>
+<p>Ajoutez l'exécutable dans le PATH.
+<a href="https://www.malekal.com/variables-environnement-windows/">Tutoriel sous Windows 10</a></p>
+<p>Testez pour vous assurer que la version que vous avez installée est à jour :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl version --client
+</code></pre></div></p>
+<h2 id="kubeconfig">Kubeconfig</h2>
+<p>Votre client Kubectl est maintenant opérationnel. Pour administrer un cluster Kubernetes, vous allez devoir utiliser les informations de connexion présentes dans le fichier kubeconfig. Pour cela, vous devez simplement placer ce fichier dans <code>$HOME/.kube/config</code>.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Quelles sont les informations que l'on retrouve dans ce fichier ?</p>
+</div>
+<h2 id="lens">Lens</h2>
+<p>Lens est un IDE (Integrated Development Environment) qui permet d'administrer localement plusieurs clusters kubernetes :</p>
+<ul>
+<li>Installez l’IDE : https://k8slens.dev/  (installez la version correspondante à votre OS)</li>
+<li>Ouvrez l’IDE : le login est inutile et vous pouvez directement cliquer sur "Browse catalog".</li>
+</ul>
+<p>Vous devriez y trouver votre .kube/config.</p>
+<h2 id="premieres-commandes">Premières commandes</h2>
+<p>Super ! Vous êtes maintenant prêt à utiliser Kubernetes. Comme tout bon outil d’administration, kubectl propose un helper assez fourni. Vous pouvez y jeter un coup d'œil :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>kubectl -h
+</code></pre></div>
+<p>Pour commencer, il faut savoir que Kubernetes fonctionne avec des <code>Namespaces</code> pour séparer de manière logique les ressources. Cela permet de séparer les projets ou les environnements par exemple et de définir des droits utilisateur sur chacun d’entre eux.</p>
+<p>Dans le cadre de cet atelier, vous aurez accès à un <code>Namespace</code> personnel qui a pour libellé votre username : si votre mail est toto@exemple.com, votre namespace se nommera toto.</p>
+<p>Maintenant, essayez de connaître les pods qui tournent dans votre namespace :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl get pods -n votre_namespace
+</code></pre></div>
+<p>Maintenant, essayez la même commande sur un autre namespace :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>kubectl get pods -n default
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Quelle est la différence ?</p>
+</div>
+<h2 id="etape-1-premieres-ressources-podsreplicasetdeployment">Etape 1 : Premières ressources : Pods/Replicaset/Deployment</h2>
+<h3 id="pods">Pods</h3>
+<p>Dans le monde Kubernetes, TOUT est ressource : un déploiement est une ressource, un pod est une ressource, une configuration est une ressource, un disque est une ressource, etc… Tous ces objets Kubernetes peuvent être décrits dans un fichier (souvent un fichier yaml).</p>
+<p>Le <code>Pod</code> est la ressource minimale et triviale qu’il est possible de déployer dans Kubernetes en terme de ressources applicatives. Pour faire simple, un pod est une ressource qui héberge un ou plusieurs containers. Comme pour un container démarré avec Docker, vous devez définir une image Docker à consommer, des variables, des volumes. Par exemple :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>kubectl run mynginx --image nginx
+</code></pre></div>
+<p>Pour chaque ressource, nous proposerons un lien qui renvoit vers la documentation officielle de Kubernetes, qui est une source fiable et souvent utile pour se rensigner sur les différentes caractéristiques des ressources.</p>
+<p>Pour le Pod, c'est par ici : <a href="https://kubernetes.io/docs/concepts/workloads/pods/">https://kubernetes.io/docs/concepts/workloads/pods/</a></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Derrière cette commande, un fichier yaml de type POD est généré et est envoyé au KubeApi pour la création.</p>
+</div>
+<p>Observez la création du pod :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>kubectl get pods mynginx
+</code></pre></div>
+<p>Vous pouvez aussi décrire le fichier yaml qui défini le pod :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>kubectl get pods mynginx -o yaml
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Quelles sont les propriétés principales que l'on retrouve ?</p>
+</div>
+<p>Vous retrouvez dans les root properties :</p>
+<ul>
+<li>apiVersion</li>
+<li>kind</li>
+<li>metadata</li>
+<li>spec</li>
+</ul>
+<p>Maintenant, détruisez le pod :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>kubectl delete pods nom_du_pod
+</code></pre></div>
+<p>Voila vous avez créé et supprimé votre première ressource dans kubernetes. Ce n'est pas si compliqué n'est ce pas ?</p>
+<h2 id="pod-yaml-definition">Pod Yaml Definition</h2>
+<p>Nous allons imaginer une application vide, qui s'appelle Unicorn. Pour l'instant, <strong>Unicorn</strong> n'est qu'un container Nginx tout vide, c'est un <strong>front</strong>.</p>
+<p>Par soucis de convention, nous vous proposons de créer un fichier <code>unicorn-front-pod.yaml</code></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Comme dans kubernetes TOUT est ressource yaml nous te conseillons de créer un dossier et une arborescence pour pouvoir les éditer et les modifier. par exemple <code>k8s-TP1/step-1</code> dans lequel vous placerez vos ressources yaml manipulées.</p>
+</div>
+<p>Pour appliquer une ressource kubernetes décrite en tant que yaml la commande est toujours la même : <code>kubectl apply -f monfichier.yaml</code></p>
+<p>A vous de jouer. Essayez de créer la même ressource avec un fichier yaml :</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pour avoir le yaml correspondant à une ressource à créer, vous pouvez utiliser la fonction dry-run, exemple :</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl run mynginx2 --image nginx --dry-run<span class="o">=</span>client -o yaml &gt; unicorn-front-pod.yml
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">#cette commande ne créera pas le pod dans kubernetes mais dumpera l&#39;équivalant du fichier yaml qui aurait été envoyé au KubeApi pour la création. c&#39;est très utiles pour avoir un template de ressource voulu et ne pas démarrer avec un yaml vierge</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="c1"># Pour appliquer une ressource décrite dans un yaml :</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>kubectl apply -f unicorn-front-pod.yml
+</code></pre></div>
+<p>Comme avec docker, dans kubernetes, vous pouvez accéder à votre container en mode exécution (remarquez que l’on retrouve des commandes Docker) :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl <span class="nb">exec</span> nom_du_pod -it -- bash
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># -it pour interactive : permet d&#39;avoir la main dans l&#39;invite de commande</span>
+</code></pre></div>
+<p>Ou voir les logs :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl logs nom_du_pod
+</code></pre></div>
+<p>Détruisez de nouveau le pod :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl delete pods nom_du_pod
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Attention, le pod ne s'appelle plus “mynginx”, vérifiez le fichier .yaml généré précédemment.</p>
+</div>
+<h3 id="replicaset">Replicaset</h3>
+<p>Ok, c’est bien : vous avez réussi à déployer un container dans un Pod ! Mais qu'en est-il de la haute disponibilité ou de la scalabilité promise ?</p>
+<p>Pour scaler un applicatif, il faut tout simplement rajouter des <code>Pods</code> du même applicatif. Vous pourriez créer à la main plusieurs Pods avec la même image mais cela ne serait pas très pratique. Il est beaucoup plus efficace de les regrouper au sein d’un groupe de ressources. C’est dans cet objectif que Kubernetes définit les <code>ReplicaSet</code> permettant de contrôler plusieurs pods d’un même applicatif (même image Docker) partageant les mêmes configs, les mêmes propriétés.</p>
+<p>Voici un exemple de ressource <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/">ReplicaSet</a> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span><span class="w"></span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ReplicaSet</span><span class="w"></span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-replicaset</span><span class="w"></span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-pod</span><span class="w"></span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Que remarquez-vous dans la description des properties <code>spec: template</code> ?
+À quoi sert le <code>selector: matchLabels</code> ?</p>
+</div>
+<p>Editez le yaml <code>unicorn-front-replicaset.yaml</code> et déployez ce <code>ReplicaSet</code> sur votre cluster avec <code>kubectl apply</code>.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Combien y a-t'il de pods déployés dans votre namespace ?</p>
+</div>
+<p>Maintenant, supprimez un <code>Pod</code>.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Que se passe-t'il ?</p>
+</div>
+<p>Supprimez le <code>ReplicaSet</code>.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Que se passe-t'il ?</p>
+</div>
+<h3 id="deployment">Deployment</h3>
+<p>Une ressource Kubernetes de type <a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/">Deployment</a><code>permet de facilement piloter des</code>ReplicaSet`. En pratique, c'est typiquement avec cette ressource que sont déployées les applications.</p>
+<p>En effet, le <code>Deployment</code> gère la notion de cycle de vie des Pods (via les version de <code>ReplicaSet</code> pilotés), notamment avec la définition de <code>RollingUpgrade</code> lors d’un déploiement de nouvelles versions. Cependant, il faut que la stratégie par défaut de <code>RollingUpdate</code> soit conservée (<code>.spec.strategy.type</code>) : cela facilite les rollbacks vers une version antérieure.</p>
+<p>Lors de la modification de la version d’une image Docker consommée dans un déploiement, un nouveau <code>ReplicaSet</code> sera créé. L’ancien <code>ReplicaSet</code> correspondant à l'ancienne version de l’image reste et les Pods sont vidés de l’ancien <code>ReplicaSet</code> vers le nouveau (<code>RollingUpgrade</code>). Ce transfert se fait au “fil de l'eau”, de manière à ce qu’il n’y ait pas d’interruption de service (par défaut Kubernetes tente de garder 75% des pods actifs). Dans le cas du TP, il ne détruit les <code>Pods</code> obsolètes qu’après que le nouveau <code>Pod</code> obtienne le statut Running.</p>
+<p>De cette manière, il est possible de facilement Rollback (processus inverse, les <code>Pods</code> allant du nouveau <code>ReplicaSet</code> vers l’ancien).</p>
+<p>La création d’un Deployment entraîne la création d’un ReplicaSet et donc la création d’un ou plusieurs Pods.</p>
+<p>La ressource <code>Deployment</code> est très proche de celle d’un <code>ReplicaSet</code> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span><span class="w"></span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span><span class="w"></span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-deployment</span><span class="w"></span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span><span class="w"></span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">        </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx:1.7.9</span><span class="w"></span>
+<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">containerPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Quels sont les changements par rapport au <code>ReplicaSet</code> ?</p>
+</div>
+<p>Editer un yaml <code>unicorn-front-deployment.yaml</code> et déployez ce <code>Deployment</code>.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Combien y a-t'il de <code>ReplicaSet</code> ? De <code>Pods</code> ?</p>
+</div>
+<p>Commandes utiles :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>kubectl get all
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>kubectl rollout status deployment.v1.apps/unicorn-front-deployment
+</code></pre></div>
+<p>Maintenant, la notion d’upgrade : c’est en pratique ce qu’il se passe lorsque l’on réalise un déploiement applicatif d’une nouvelle release (via un <code>Continuous Deployment</code> par exemple).</p>
+<p>Pour cela, changez la version de l’image nginx :</p>
+<p>Modifier une image docker dans un <code>deployment</code> revient a modifier cette ressource deployment. Pour modifier une ressource, vous avez 3 solutions :</p>
+<ol>
+<li>
+<p><code>kubectl set</code> ou <code>kubectl patch</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl <span class="nb">set</span> image deployment/unicorn-front-deployment <span class="nv">nginx</span><span class="o">=</span>nginx:1.9.1 --record
+</code></pre></div>
+</li>
+<li>
+<p>Editer le fichier yaml en local et faire un <code>kubectl apply -f monfichier.yaml</code></p>
+<p>Il est possible également d'éditer le yaml définition de déploiement en changeant l’image et d'utiliser cette commande :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl apply -f ...
+</code></pre></div>
+</li>
+<li>
+<p>Editer directement la ressouce avec <code>kubectl edit</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>kubectl edit deployment.v1.apps/unicorn-front-deployment
+</code></pre></div>
+</li>
+</ol>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>On preferera réaliser des updates de ressources en éditant son fichier yaml (ici unicorn-front-deployment.yaml) en utilisant donc la 2ème solution. Cela permet d'avoir la bonne version dans son dossier (fichier synchronisé avec ce qui est sur le cluster).</p>
+</div>
+<p>Regardez le statut du <code>RollingUpgrade</code> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>kubectl rollout status deployment.v1.apps/unicorn-front-deployment
+</code></pre></div>
+<p>Si vous utilisez la commande rapidement, vous verrez le <code>RollingUpgrade</code> en cours.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Une fois terminé, combien y a-t-il de replicaset ? Combien y a-t-il de Pods ?
+Allez voir les logs des événements du déploiement avec <code>kubectl describe deployments</code>. Qu’observez vous ?</p>
+</div>
+<p>Commande utile :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>kubectl describe deployments
+</code></pre></div>
+<h3 id="faire-un-rollback">Faire un Rollback</h3>
+<p>Mettez à jour votre déploiement avec une nouvelle version de l’image nginx.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>kubectl <span class="nb">set</span> image deployment.v1.apps/unicorn-front-deployment <span class="nv">nginx</span><span class="o">=</span>nginx:1.91-falseimage --record<span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<p>Observez votre <code>Deployment</code>, vos <code>Pods</code> et vos <code>ReplicaSets</code>.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Que se passe-t'il ? Pourquoi ?</p>
+</div>
+<p>Dans ce cas de figure, l'objectif est de revenir à une version stable de <code>Deployment</code> (une version fonctionnelle avec une bonne image nginx).</p>
+<p>Pour commencer, vérifiez les révisions de ce déploiement :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kubectl rollout <span class="nb">history</span> deployment.v1.apps/unicorn-front-deployment
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Combien y a-t-il de révisions ? À quoi correspond le champ <code>CHANGE-CAUSE</code> ?</p>
+</div>
+<p>Vous pouvez afficher les détails de chaque révision (pour la révision 2 par exemple) avec cette commande :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kubectl rollout <span class="nb">history</span> deployment.v1.apps/unicorn-front-deployment --revision<span class="o">=</span><span class="m">2</span>
+</code></pre></div>
+<p>Maintenant que la version stable est identifiée, voici la commande pour retourner à cette version :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>kubectl rollout undo deployment.v1.apps/unicorn-front-deployment --to-revision<span class="o">=</span><span class="m">2</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Pour revenir à la version précédente, il est aussi possible d'utiliser cette commade :</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>kubectl rollout undo deployment.v1.apps/unicorn-front-deployment
+</code></pre></div>
+<h3 id="mettre-a-lechelle">Mettre à l'échelle</h3>
+<p>Le déploiement de nouvelles versions (releases) est maintenant maîtrisé mais dans l'hypothèse que le site internet est promu au journal télévisé et qu’un afflux conséquent de visiteurs se connectent dessus, que faire ? Il faut tout simplement déployer plus de <code>Pods</code> de l'applicatif. C’est ce qui est appellé <code>scaler</code> une application.</p>
+<p>Scalez le serveur nginx à 5 :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl scale deployment.v1.apps/unicorn-front-deployment --replicas<span class="o">=</span><span class="m">5</span>
+</code></pre></div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Encore une fois cette commande est pratique pour le cadre du TP mais en pratique on preférera éditer son fichier yaml de déploiment et mettre replica: 5 puis faire un <code>kubectl apply -f unicorn-front-deployment.yaml</code></p>
+</div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Combien y a-t'il de <code>Pods</code>?</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Pour aller plus loin, Kubernetes implémente, si c’est activé, un système d’autoscaling appelé HPA (<code>Horizontal Pods Autoscaling</code>). Kubernetes se chargera de scaler automatiquement l'application en fonction de trigger définis par exemple sur la consommation CPU ou la RAM. Si vous êtes rapide une implémentation du HPA est proposé en bonus.</p>
+</div>
+<h3 id="mettre-en-standby-un-deploiement">Mettre en standby un deploiement</h3>
+<p>Mettez en pause un <code>Deployment</code> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>kubectl rollout pause deployment.v1.apps/unicorn-front-deployment
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>kubectl <span class="nb">set</span> image deployment.v1.apps/unicorn-front-deployment <span class="nv">nginx</span><span class="o">=</span>nginx:1.20.2
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Que se passe-t-il au niveau <code>ReplicaSet</code> ?</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>kubectl rollout resume deployment.v1.apps/unicorn-front-deployment
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Que se passe-t-il au niveau <code>ReplicaSet</code> ?</p>
+</div>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>La pause permet de modifier le déploiement (encore une autre version, des properties du <code>Deployment</code> comme les limits/ressources) sans déclencher de <code>RollingUpgrade</code>.</p>
+</div>
+<h3 id="bonus">Bonus</h3>
+<p>Lorsque des applications sont déployées sous forme de containers (dans des Pods), il est indispensable de contrôler les ressources qu’elles consomment. Imaginez qu’un Pod se mette à consommer plusieurs dizaines de gigabytes de mémoire vive, quel serait l’impact sur les autres <code>Pods</code> tournant sur le même Worker Node (même serveur) ?</p>
+<p>Pour empêcher cela, Kubernetes implémente la notion de Ressources Management.</p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span><span class="nt">requests</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;64Mi&quot;</span><span class="w"></span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;250m&quot;</span><span class="w"></span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="w">  </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a><span class="w">    </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;128Mi&quot;</span><span class="w"></span>
+<a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a><span class="w">    </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;500m&quot;</span><span class="w"></span>
+</code></pre></div>
+</div>
+<p>Ce block se place au niveau <code>spec.container</code><br />
+ * Le requests est la ressource monopolisée au start du Container.
+ * La limits est le maximum de mémoire et CPU consommable par le Pod.</p>
+<p>Implémentez une ressource management pour votre <code>Deployment</code> avec ces spécifications :
+ * Requests : mémoire : 32 Mo / CPU : 100m
+ * Limits : mémoire 256 Mo / CPU : 400m</p>
+<div class="admonition check">
+<p class="admonition-title">Check</p>
+<p>Vous devez avoir les fichiers suivants dans le dossier <code>step-1</code> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>    .
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>    ├── unicorn-front-deployment.yaml
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>    ├── unicorn-front-replicaset.yaml
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>    └── unicorn-front-pod.yaml
+</code></pre></div></p>
+</div>
+<h2 id="etape-2-publication-serviceingress">Etape 2 : Publication Service/Ingress</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Vous pouvez maintenant vous placer dans le dossier <code>k8s-TP1/step-2</code> dans lequel vous placerez vos ressources yaml manipulées pendant cette étape. Gardez les ressources yaml du step-1 qui pourront vous servir de référence. </p>
+</div>
+<p>La plupart du temps l'applicatif qui tourne dans un <code>Pod</code> Kubernetes doit délivrer un service (que ce soit une Api, un Front ou une base de données, par exemple) et doit donc être requêté.</p>
+<p>Kubernetes possède une ressource spécifique appelée <code>Service</code>.</p>
+<h3 id="service">Service</h3>
+<p>Le <a href="https://kubernetes.io/docs/concepts/services-networking/service/">Service</a> agit comme un Load Balancer qui va transmettre les requêtes qu’il reçoit vers les Pods auxquels il est rattaché. Ce rattachement se fait grâce aux Selector.</p>
+<p>Pour publier le Deployment unicorn-front-deployment de l'étape 1, Editez le fichier <code>unicorn-front-service.yaml</code> et déployez le avec <code>kubectl apply</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Service</span><span class="w"></span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-service</span><span class="w"></span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front</span><span class="w"></span>
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span><span class="w"></span>
+<a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w"></span>
+<a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a><span class="w">      </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul>
+<li><code>spec.ports.port</code> est le port sur lequel le service va écouter.</li>
+<li><code>spec.ports.targetPort</code> est le port <strong>exposé</strong> par le container sur le pod.</li>
+</ul>
+</div>
+<p>Important : Vérifiez que le targetPort du <strong>service</strong> correspond bien au <strong>containerPort</strong> du deployment (ou du pod). 
+Pour éviter de s'emmêler les pinceaux, vous pouvez aussi <strong>nommer</strong> le port dans votre <strong>deployment</strong> et l'appeler dans le service (<code>spec.template.spec.containers[].ports[].name</code>).</p>
+<p>Par défaut, les services sont de type <code>ClusterIp</code>, c'est-à-dire qu'ils sont accessibles depuis l'intérieur du cluster Kubernetes (et donc pas publiquement sur internet) mais seulement pour les autres applications qui tournent dans le même cluster Kubernetes.</p>
+<p>Un comportement idéal pour un Backend ou une base de données mais non adapté pour le Front d’un portail Web qui doit être accessible à des utilisateurs.</p>
+<p>Pour exposer ces services, il existe plusieurs solutions. Voici les deux les plus courantes :
+ * Soit faire un service de type <code>NodePort</code> (pour exposer le service sur l’ensemble des serveurs Worker du cluster Kubernetes) ou <code>LoadBalancer</code> (pour provisionner un load balancer sur le cloud provider sur lequel il tourne (AWS, GCP, AZURE pour citer les principaux).
+ * Soit faire un <code>Ingress</code>. Pour les Service Http / Https, c’est la solution préconisée car elle permet d'accéder aux applications en utilisant une même IP publique. L’ingress est en fait un Reverse Proxy (voir Api Gateway) et constitue le point d’entrée de tous les applicatifs à publier sur le Web. L’ingress transmet ensuite les requêtes au service de type ClusterIP.</p>
+<p>Pour résumer, voilà l’idée :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>UTILISATEUR → INGRESS → SERVICE → PODS
+</code></pre></div></p>
+<p>À noter que l’Ingress Controller utilise lui-même un service de type <code>LoadBalancer</code> ou <code>NodePort</code> partagé par tous les ingress qu’il va contrôler.</p>
+<h3 id="ingress">Ingress</h3>
+<p>Nous allons maintenant mettre en place un <a href="https://kubernetes.io/docs/concepts/services-networking/ingress/">Ingress</a></p>
+<p>Si vous êtes curieux, vous aurez remarqué qu’il y a déjà un <code>IngressClass</code> dans le Cluster qui a été provisionné. Il s’agit d’un <a href="https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/">Ingress Controller</a> Nginx.</p>
+<p>Qui dit Reverse Proxy, dit bien sûr URL. En effet, le Reverse Proxy utilise un ensemble URL+Path pour savoir vers quel service il doit transmettre les requêtes. Un DNS a déjà été créé et vous a été transmis par mail.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Le DNS devrait être de la forme cequevousvoulez.${namespace}.takima.cloud <br />
+Exemple pour le namespace johndoe : <code>unicorn.johndoe.takima.cloud</code></p>
+</div>
+<p>Editer un fichier <code>unicorn-front-ingress.yaml</code> et déployez-le sur kubernetes :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">networking.k8s.io/v1</span><span class="w"></span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ingress</span><span class="w"></span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w"> </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="w">   </span><span class="nt">kubernetes.io/ingress.class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<a id="__codelineno-37-6" name="__codelineno-37-6" href="#__codelineno-37-6"></a><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-ingress</span><span class="w"></span>
+<a id="__codelineno-37-7" name="__codelineno-37-7" href="#__codelineno-37-7"></a><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-8" name="__codelineno-37-8" href="#__codelineno-37-8"></a><span class="w"> </span><span class="nt">rules</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-9" name="__codelineno-37-9" href="#__codelineno-37-9"></a><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace-with-your-url</span><span class="w"></span>
+<a id="__codelineno-37-10" name="__codelineno-37-10" href="#__codelineno-37-10"></a><span class="w">   </span><span class="nt">http</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-11" name="__codelineno-37-11" href="#__codelineno-37-11"></a><span class="w">     </span><span class="nt">paths</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-12" name="__codelineno-37-12" href="#__codelineno-37-12"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backend</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-13" name="__codelineno-37-13" href="#__codelineno-37-13"></a><span class="w">         </span><span class="nt">service</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-14" name="__codelineno-37-14" href="#__codelineno-37-14"></a><span class="w">           </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-service</span><span class="w"></span>
+<a id="__codelineno-37-15" name="__codelineno-37-15" href="#__codelineno-37-15"></a><span class="w">           </span><span class="nt">port</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-37-16" name="__codelineno-37-16" href="#__codelineno-37-16"></a><span class="w">             </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w"></span>
+<a id="__codelineno-37-17" name="__codelineno-37-17" href="#__codelineno-37-17"></a><span class="w">       </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span><span class="w"></span>
+<a id="__codelineno-37-18" name="__codelineno-37-18" href="#__codelineno-37-18"></a><span class="w">       </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span><span class="w"></span>
+</code></pre></div>
+<p>Essayez d'accéder au service.</p>
+<div class="admonition check">
+<p class="admonition-title">Check</p>
+<p>Vous devez avoir les fichiers suivants dans le dossier <code>step-2</code> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>    .
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>    ├── unicorn-front-service.yaml
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>    └── unicorn-front-ingress.yaml
+</code></pre></div></p>
+</div>
+<h3 id="bonus_1">Bonus</h3>
+<p>Comme la sécurité c’est important, il est possible d'utiliser HTTPS/TLS, mais pas d'inquiétude, les éventuels problèmes de certificats ont été réglés en amont.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Nous avons mis deux cluster-issuers dans le Cluster : 
+ * Un appelé <code>letsencrypt-staging</code> qui vous permet de tout tester avec des certificats auto-signés.
+ * L'autre appelé <code>letsencrypt-prod</code> qui vous permet de vraiment générer un certificat Let's Encrypt valid.</p>
+</div>
+<p>Nous vous <strong>recommandons</strong> de d'abord faire vos tests avec <code>letsencrypt-staging</code>, puis de switcher sur <code>letsencrypt-prod</code> une fois que vous pouvez bien accéder à votre ressource depuis un navigateur.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="w"> </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">   </span><span class="nt">cert-manager.io/cluster-issuer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">letsencrypt-staging</span><span class="w"></span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">   </span><span class="nt">kubernetes.io/tls-acme</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;true&#39;</span><span class="w"></span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">   </span><span class="nt">kubernetes.io/ingress.class</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span><span class="w"></span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-ingress</span><span class="w"></span>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-7" name="__codelineno-39-7" href="#__codelineno-39-7"></a><span class="w"> </span><span class="nt">rules</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-8" name="__codelineno-39-8" href="#__codelineno-39-8"></a><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace-with-your-url</span><span class="w"></span>
+<a id="__codelineno-39-9" name="__codelineno-39-9" href="#__codelineno-39-9"></a><span class="w">   </span><span class="nt">http</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-10" name="__codelineno-39-10" href="#__codelineno-39-10"></a><span class="w">     </span><span class="nt">paths</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-11" name="__codelineno-39-11" href="#__codelineno-39-11"></a><span class="w">     </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">backend</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-12" name="__codelineno-39-12" href="#__codelineno-39-12"></a><span class="w">         </span><span class="nt">service</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-13" name="__codelineno-39-13" href="#__codelineno-39-13"></a><span class="w">           </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-service</span><span class="w"></span>
+<a id="__codelineno-39-14" name="__codelineno-39-14" href="#__codelineno-39-14"></a><span class="w">           </span><span class="nt">port</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-15" name="__codelineno-39-15" href="#__codelineno-39-15"></a><span class="w">             </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w"></span>
+<a id="__codelineno-39-16" name="__codelineno-39-16" href="#__codelineno-39-16"></a><span class="w">       </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span><span class="w"></span>
+<a id="__codelineno-39-17" name="__codelineno-39-17" href="#__codelineno-39-17"></a><span class="w">       </span><span class="nt">pathType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Prefix</span><span class="w"></span>
+<a id="__codelineno-39-18" name="__codelineno-39-18" href="#__codelineno-39-18"></a><span class="w"> </span><span class="nt">tls</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-19" name="__codelineno-39-19" href="#__codelineno-39-19"></a><span class="w"> </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-39-20" name="__codelineno-39-20" href="#__codelineno-39-20"></a><span class="w">   </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">replace-with-your-url</span><span class="w"></span>
+<a id="__codelineno-39-21" name="__codelineno-39-21" href="#__codelineno-39-21"></a><span class="w">   </span><span class="nt">secretName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unicorn-front-tls</span><span class="w"></span>
+</code></pre></div>
+<p>Vérifiez l’accès en SSL</p>
+<h3 id="mise-en-situation">Mise en situation</h3>
+<p>Pour bien se rendre compte du fonctionnement du Load Balancing, un Webservice simple a été préparé. Tout d'abord, commencez par nettoyer votre <code>Namespace</code> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>kubectl delete --all deployments
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>kubectl delete --all services
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a>kubectl delete --all ingress
+</code></pre></div>
+<p>Editez un nouveau <code>Deployment</code> avec l’image suivante pour avoir 3 <code>Pods</code> <code>master3.takima.io:4567/master3/kubernetes-resources/hello_world:latest</code>. Vous pouvez nommer le fichier <code>hello-deployment.yaml</code></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Cette image contient un node qui expose ses services sur le port <strong>3000</strong>.</p>
+</div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Que se passe-t'il ? Pourquoi ?</p>
+</div>
+<p>Vous utiliserez la plupart du temps des containers provenant de <code>Container Registry</code> privés, peu d’entreprises exposant publiquement leurs containers. Il faut alors gérer les accès au Registry privé.</p>
+<p>Pour cela, il convient de créer une nouvelle ressource de type <code>Secret</code> dans Kubernetes. Cette ressource sera décrite plus en détail ultérieurement.</p>
+<p>Pour le moment, créez la ressource avec les informations que vous avez reçues par mail :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>kubectl create secret docker-registry auth-master3-registry --docker-server<span class="o">=</span>master3.takima.io:4567 --docker-username<span class="o">=</span>readregcred --docker-password<span class="o">=</span>&lt;PASSWORD&gt;
+</code></pre></div>
+<p>Puis modifiez votre <code>Deployment</code> pour indiquer que vous souhaitez utiliser ce Secret pour pull l’image.</p>
+<p>Pour cela, éditez votre yaml ajoutez y ce block au même niveau que <code>spec.template.spec</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth-master3-registry</span><span class="w"></span>
+</code></pre></div>
+<p>Une fois le <code>Deployment</code> réalisé (contrôlez que les <code>Pods</code> ont bien le status running), créez un <code>Service</code> ainsi qu’un <code>Ingress</code> pour accéder à la Web App (nouveau fichier <code>hello-service.yaml</code> et <code>hello-ingress.yaml</code>). Si vous ne l'avez pas fait dans votre <code>Deployment</code>, scalez votre <code>Deployment</code> à 3.</p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Décrivez ce que répond la Web App ?
+Actualisez votre page avec CTRL + F5. Que se passe-t-il ?</p>
+</div>
+<p>Maintenant, nous allons ajouter des configs de variables d'environement, celles-ci pourront être utilisées dans les container (et donc dans les applicatifs qui tournent dessus). Ajoutez les variables suivantes dans le deployment (au niveau <code>spec.template.spec.container.env</code>):</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">K8S_NODE_NAME</span><span class="w"></span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="w">  </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="w">    </span><span class="nt">fieldRef</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="w">      </span><span class="nt">fieldPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">spec.nodeName</span><span class="w"></span>
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">K8S_POD_NAME</span><span class="w"></span>
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a><span class="w">  </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="w">    </span><span class="nt">fieldRef</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="w">      </span><span class="nt">fieldPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">metadata.name</span><span class="w"></span>
+<a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">K8S_POD_IP</span><span class="w"></span>
+<a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="w">  </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-43-11" name="__codelineno-43-11" href="#__codelineno-43-11"></a><span class="w">    </span><span class="nt">fieldRef</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-43-12" name="__codelineno-43-12" href="#__codelineno-43-12"></a><span class="w">      </span><span class="nt">fieldPath</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">status.podIP</span><span class="w"></span>
+</code></pre></div>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Que constatez-vous sur le navigateur ?</p>
+</div>
+<div class="admonition check">
+<p class="admonition-title">Check</p>
+<p>Vous devez avoir les nouveaux fichiers suivants dans le dossier <code>step-2</code> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>    .
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>    ├── hello-deployement.yaml
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>    ├── hello-service.yaml
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a>    └── hello-ingress.yaml
+</code></pre></div></p>
+</div>
+<h2 id="etape-3-configmapsecret">Etape 3 : ConfigMap/Secret</h2>
+<p>La plupart du temps lorsque qu'une application est déployée, vous aurez besoin de lui fournir une configuration. Par exemple, vous lui indiquerez des valeurs pour les variables d’environnement (de la même manière que le .env du Docker Compose). Bien qu’il soit possible de configurer cela “en dur” dans le Pod ou le Deployment, il est d'adage que le concept de hardcoder des configs envoie droit à la catastrophe. Dans Kubernetes, une ressource est dédiée pour éviter cette destinée : il s’agit du <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMap</a>.</p>
+<p>La plupart du temps un <a href="https://kubernetes.io/docs/concepts/configuration/configmap/">ConfigMap</a> définit un couple Key/Value qui sera ensuite utilisé dans le <code>Pod</code> pour configurer des variables d'environnement. Mais vous pourrez aussi définir un fichier de configuration entier et le monter comme un volume dans votre <code>Pod</code>.</p>
+<h3 id="exemple">Exemple:</h3>
+<p>Quelque chose est volontairement caché dans la Web App de démo. En effet, il est possible de lui définir une variable d’environnement nommée CUSTOM_COLOR pour forcer la couleur du background.</p>
+<p>Pour cela il faut:
+* Créer un <code>ConfigMap</code> en configurant cette variable, nouveau fichier <code>hello-config.yaml</code>.
+* Consommer la variable dans le <code>Deployment</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ConfigMap</span><span class="w"></span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">web-app</span><span class="w"></span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="w">  </span><span class="c1"># property-like keys; each key maps to a simple value</span><span class="w"></span>
+<a id="__codelineno-45-7" name="__codelineno-45-7" href="#__codelineno-45-7"></a><span class="w">  </span><span class="nt">color</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#200&quot;</span><span class="w"></span>
+</code></pre></div>
+<p>Le bloc suivant est à placer dans le <code>Deployment</code> au niveau du template container (au même niveau que le name ou l’image du container utilisé dans le deployment <code>spec.template.spec.container</code>). Attention à l'indentation du yaml !</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CUSTOM_COLOR</span><span class="w"> </span><span class="c1"># Vrai key de la variable d&#39;env. Peut être différent de la valeur dans le config map</span><span class="w"></span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="nt">valueFrom</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">      </span><span class="nt">configMapKeyRef</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">web-app</span><span class="w">  </span><span class="c1"># Nom du configmap</span><span class="w"></span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">        </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">color</span><span class="w">     </span><span class="c1"># nom de la clef dans le config map</span><span class="w"></span>
+</code></pre></div>
+<h3 id="secret">Secret</h3>
+<p>Un <a href="https://kubernetes.io/docs/concepts/configuration/secret/">Secret</a> s’utilise comme un <code>ConfigMap</code> mais sera masqué dans le cluster Kubernetes et vous pourrez appliquer des droits différents sur ces ressources pour avoir des restrictions d’accès. D’ailleurs, pour le créer, vous devez encoder les données en Base64.</p>
+<p>Deux solutions :
+* Soit directement en Command line avec kubectl create
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>kubectl create secret generic my-secret --from-literal<span class="o">=</span><span class="nv">username</span><span class="o">=</span>user --from-literal<span class="o">=</span><span class="nv">password</span><span class="o">=</span><span class="s1">&#39;test123*&#39;</span>
+</code></pre></div>
+Remarque : dans ce cas on ne passe pas les data en base 64, la commande s'occupe de cela.
+* Soit via un yaml, mais attention, dans ce cas les valeurs des data doivent être en Base64. Il faut donc convertir les valeurs au préalable :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="nb">echo</span> -n <span class="s1">&#39;user&#39;</span> <span class="p">|</span> base64
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="nv">dXNlcg</span><span class="o">==</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="nb">echo</span> -n <span class="s1">&#39;test123*&#39;</span> <span class="p">|</span> base64
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="nv">dGVzdDEyMyo</span><span class="o">=</span>
+</code></pre></div></p>
+<p>Puis, le yaml peut être édité, nouveau fichier <code>hello-secret.yaml</code> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Secret</span><span class="w"></span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hello-secret</span><span class="w"></span>
+<a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Opaque</span><span class="w"></span>
+<a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a><span class="nt">data</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="w">  </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">YWRtaW4=</span><span class="w"></span>
+<a id="__codelineno-49-8" name="__codelineno-49-8" href="#__codelineno-49-8"></a><span class="w">  </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">MWYyZDFlMmU2N2Rm</span><span class="w"></span>
+</code></pre></div>
+<p>Il ne reste plus qu'à kubectl apply le fichier. Vérifier dans Lens par exemple que le secret est créé. Dans Lens vous pouvez visualiser le contenu du secret en cliquant sur l'oeil</p>
+<div class="admonition check">
+<p class="admonition-title">Check</p>
+<p>Vous devriez avoir les fichiers suivants dans le dossier <code>step-3</code> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a>    .
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>    ├── hello-config.yaml
+<a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>    └── hello-secret.yaml
+</code></pre></div></p>
+</div>
+<h4 id="bonus-1-rendre-sa-couleur-secrete">Bonus 1: Rendre sa couleur secrète</h4>
+<p>Afin d'éviter que votre couleur préférée soit connue de tous, passez la variable du code couleur en mode <code>Secret</code>. Bonne chance !</p>
+<h4 id="bonus-2-mon-pod-est-il-en-vie">Bonus 2: Mon pod est-il en vie ?</h4>
+<p>Il peut arriver parfois que notre application démarre et soit capable de fonctionner de manière norminale pendant un temps
+avant de voir son service se dégrader (apparition d'un deadlock qui empêche l'application de fonctionner normalement).</p>
+<p>Ce genre d'erreur peut survenir sans pour autant que votre application s'arrête d'elle même. Dans ce cas là, il convient de
+fournir à kubernetes un moyen de savoir si l'application devrait être redémarrée ou non. </p>
+<p>Cela tombe bien puisque notre application <strong>hello-world</strong> propose un endpoint sur <code>/health</code> donnant l'information sur son
+état courant. Paramétrez votre <code>Deployment</code> pour qu'il fasse un appel régulier sur ce fameux endpoint <code>/health</code>. Pour vérifier
+que tout marche bien, vous pouvez changer l'état du healtcheck en faisant une requête <strong>GET</strong> sur le endpoint <code>/kill</code>. Une fois
+fait, l'un de vos pods devraient redémarrer.</p>
+<h4 id="bonus-3-let-my-kubernetes-scale">Bonus 3: Let my kubernetes Scale !!!</h4>
+<p>Comme promis, voici une mise en pratique du <a href="https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/">HPA</a>, la mise à l'échelle automatique d'un déploiement. Pour cela, commencez par supprimmer vos ressources <code>déployment</code> existantes (pour avoir de la visibilité).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Le <strong>HPA</strong> se base sur les ressources request définies dans votre déploiement, en effet on va définir un pourcentage basé sur ces ressources. Nous vous conseillons donc de réaliser le bonus de l'étape 1, qui traite de cela avant de continuer.</p>
+</div>
+<p>Nous avons préparé pour vous un petit applicatif qui simule une charge à chaque fois qu'il recoit une requête http.</p>
+<p>Commencez par éditer et deployer le fichier <code>hpa-deployment.yaml</code> avec :</p>
+<ul>
+<li>image : master3.takima.io:4567/master3/kubernetes-resources/hpa:latest</li>
+<li>replicas à 1</li>
+<li>nom <code>hpa</code> et label <code>app: hpa</code></li>
+<li>les ressources suivantes :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="w">          </span><span class="nt">limits</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a><span class="w">            </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500m</span><span class="w"></span>
+<a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="w">          </span><span class="nt">requests</span><span class="p">:</span><span class="w"></span>
+<a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a><span class="w">            </span><span class="nt">cpu</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">200m</span><span class="w"></span>
+</code></pre></div></li>
+<li>la mise en place du <code>imagePullSecrets</code> car on pull un registry privé.</li>
+</ul>
+<p>Editez et déployez en suite le service correspondant :
+- targetPort: 80
+- Port: 80
+- nom: hpa</p>
+<p>Voilà le socle est prêt pour mettre à l'échelle notre application:</p>
+<ul>
+<li>Mettez en place le hpa sur le déploiement :</li>
+</ul>
+<p><code>kubectl autoscale deployment hpa --cpu-percent=50 --min=1 --max=10</code></p>
+<p>Ici on demande de scaler l'application dès que la ressource cpu dépasse 50% du request (ici donc 100m cpu).</p>
+<p>Vérifiez l'état du <strong>HPA</strong> (on peut aussi le voir dans LENS)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>laptop-3007:~$ kubectl get hpa
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>NAME   REFERENCE        TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+<a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a>hpa    Deployment/hpa   0%/50%    1         10        1          105s
+</code></pre></div>
+<p>On voit qu'il n'est pas très chargé. Mais cela ne va pas durer !</p>
+<p>Pour générer du traffic rien de tel qu'un pod qui attaque le service, sur un autre terminal, lancez cette commande et laissez la tourner en fond:</p>
+<p><code>kubectl run -i --tty load-generator --rm --image=public.ecr.aws/hudsonbay/busybox:latest --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://hpa; done"</code></p>
+<p>Puis, commencez à observer la charge monter sur votre déploiement en lancant plusieurs <code>kubectl get hpa</code> ou avec un <code>watch</code>(ici a 160%)</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>laptop-3007:~$ kubectl get hpa
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>NAME   REFERENCE        TARGETS    MINPODS   MAXPODS   REPLICAS   AGE
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>hpa    Deployment/hpa   160%/50%   1         10        1          108s
+</code></pre></div>
+<p>Voici ce qui est attendu :</p>
+<p><img alt="scaling hpa" src="../assets/hpa_scale.png" /></p>
+<p>On voit bien notre applicatif scaler à 6 pods. On le constate aussi si l'on fait un <code>kubectl get pods</code> d'ailleurs.</p>
+<p>De plus nous pouvons lancer un <code>kubectl describe hpa hpa</code>  pour regarder les logs du hpa et ces évenements :</p>
+<p><img alt="scaling hpa" src="../assets/hpa_scale_logshpa.png" /></p>
+<p>Les logs parlent d'eux mêmes !</p>
+<p>Maintenant, coupez le process qui tourne en fond sur votre deuxième terminal.</p>
+<p>On remarque que la charge a diminué avec un <code>kubectl get hpa</code></p>
+<p>Et au bout de quelques minutes le hpa devrait downscale l'applicatif. Par défault, pour des raisons de stabilisation, le dowscaling ne se fait qu'après 300 secondes sous le déclencheur (dans notre cas 50% de cpu request). Attendez donc un peu et vérifiez que le déploiement repasse à 1 replicas.</p>
+<p><img alt="scaling hpa" src="../assets/hpa_downscale_logshpa.png" /></p>
+<div class="admonition check">
+<p class="admonition-title">Check</p>
+<p>Vous devriez avoir 2 nouveaux fichiers dans le dossier <code>hpa</code> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>    .
+<a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>    ├── hpa-deployment.yaml
+<a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>    └── hpa-service.yaml
+</code></pre></div></p>
+</div>
+<p align="center">&copy; Takima 2022</p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Briefing" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Briefing
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../ch2-deep-dive/" class="md-footer__link md-footer__link--next" aria-label="Next: Day 2 - Deep Dive" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Day 2 - Deep Dive
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.instant"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.c7dec7e7.min.js"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.da79ceb7.min.js"></script>
+      
+    
+  </body>
+</html>

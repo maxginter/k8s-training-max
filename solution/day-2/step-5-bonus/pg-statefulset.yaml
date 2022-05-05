@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pg-database-bis
+  labels:
+    app: pg-bis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pg-bis
+  template:
+    metadata:
+      labels:
+        app: pg-bis
+    spec:
+      containers:
+      - name: postgres
+        image: master3.takima.io:4567/master3/kubernetes-resources/db:latest
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: pg-data
+        ports:
+        - containerPort: 80
+        env:
+          - name: POSTGRES_DB
+            valueFrom:
+              configMapKeyRef:
+                name: pg-config  # Nom du configmap
+                key: db_name     # nom de la clef dans le config map contenant le nom de la DB
+          - name: PGDATA
+            valueFrom:
+              configMapKeyRef:
+                name: pg-config  # Nom du configmap
+                key: db_path     # nom de la clef dans le configMap contenant path ou installer la db dans le volume persistant
+          - name: POSTGRES_USER
+            valueFrom:
+              secretKeyRef:
+                name: pg-credentials  # Nom du secret
+                key: pg_username     # nom de la clef dans le secret
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pg-credentials  # Nom du secret
+                key: pg_password     # nom de la clef dans le secret contenant le password
+      imagePullSecrets:
+      - name: auth-master3-registry
+  volumeClaimTemplates:
+  - metadata:
+      name: pg-data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

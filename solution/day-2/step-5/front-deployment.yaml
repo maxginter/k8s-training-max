@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front
+  labels:
+    app: front
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: front
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      imagePullSecrets:
+        - name: auth-master3-registry
+      containers:
+      - name: front
+        image: master3.takima.io:4567/master3/kubernetes-resources/front:latest
+        ports:
+        - containerPort: 80
+        env: 
+          - name: API_URL
+            valueFrom:
+              configMapKeyRef:
+                name: front-config
+                key: API_URL

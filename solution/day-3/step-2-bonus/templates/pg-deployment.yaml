@@ -12,7 +12,7 @@ spec:
     metadata:
       labels: {{ include "AppCtx.dbLabels" . | nindent 10 }}
       annotations:
-        - checksum/config: {{ include (print $.Template.BasePath "/pg-config.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/pg-config.yaml") . | sha256sum }}
     spec:
       containers:
       - name: postgres

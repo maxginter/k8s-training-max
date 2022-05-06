@@ -1,0 +1,54 @@
+# Default values for CDB app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+## The global properties are used to configure multiple charts at once.
+## Extended documentation at doc/charts/globals.md
+
+api:
+  enabled: true
+  image:
+    repository: master3.takima.io:4567/master3/kubernetes-resources/api
+    tag: latest
+  serviceName: api
+  servicePort: 80
+  healthcheck:
+    startupFailureThreshold: 30
+    startupPeriodSeconds: 10
+  ingress:
+    enabled: true
+    host: api.to-replace.takima.cloud
+    tls:
+      enabled: true
+      secretName: api-tls
+
+front:
+  enabled: true
+  image:
+    repository: master3.takima.io:4567/master3/kubernetes-resources/front
+    tag: latest
+  serviceName: front
+  servicePort: 80
+  replicaCount: 3
+  ingress:
+    enabled: true
+    host: www.to-replace.takima.cloud
+    tls:
+      enabled: true
+
+db:
+  enabled: true
+  image:
+    repository: master3.takima.io:4567/master3/kubernetes-resources/db
+    tag: latest
+  name: "cdb-db"
+  path: "/var/lib/postgresql/data/pgdata"
+  serviceName: db
+  servicePort: 5432
+  pvc:
+    storageClass: gp2
+    size: 512Mi
+  credentials:
+    user: cdb
+    pwd: cdb123
+
